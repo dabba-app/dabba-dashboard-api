@@ -11,6 +11,7 @@
     * `cd dabba-app`
     * `virtualenv venv`
     * `source venv/bin/activate`
+    * `sudo pip install -r requirements.txt`    
     * `docker run --name mongodb-docker-dabba -p 27017:27017 -d mongo`
     * `sudo docker exec -it mongodb-docker-dabba mongo admin`
     * `use charts`
