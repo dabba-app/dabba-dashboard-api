@@ -19,7 +19,7 @@
 * ##### Running the app
     * `python app.py`
 
-*Mock Dashboard Setup* - Open `localhost:8080`, create a Dashboard, selected Widget Chart as C3 linechart and selected datasource as `http://localhost:8080/line` to see dashboard with mock line endpoint data=.
+*Mock Dashboard Setup* - Open `localhost:8080`, create a Dashboard, selected Widget Chart as C3 linechart and selected datasource as `http://localhost:8080/line` to see dashboard with mock line endpoint data..
 
 ## Notes for Developing app further
 
