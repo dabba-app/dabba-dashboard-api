@@ -1,5 +1,3 @@
-"""This is an example app, demonstrating usage."""
-
 import os
 from random import randrange as rr
 
