@@ -7,8 +7,8 @@
     * *virtualenv* - `pip install virtualenv`
 
 * ##### First Time Setup
-    * `git clone https://github.com/bholagabbar/dabba-api`
-    * `cd dabba-api`
+    * `git clone https://github.com/dabba-fyp/dabba-app`
+    * `cd dabba-app`
     * `virtualenv venv`
     * `source venv/bin/activate`
     * `docker rm mongodb-docker-dabba && docker run --name mongodb-docker-dabba -p 27017:27017 -d mongo`
