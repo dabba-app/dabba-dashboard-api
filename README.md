@@ -4,6 +4,7 @@
 * ##### Dependencies
     * [Docker for Mac](https://download.docker.com/mac/stable/Docker.dmg) - ensure it is running with the whale icon in the menubar
     * [Python 2.7](https://www.python.org/download/releases/2.7/)
+    * [MongoDB](https://www.mongodb.com/) - currently run as a docker container so standalone installation is not required
     * *virtualenv* - `pip install virtualenv`
 
 * ##### First Time Setup
@@ -11,7 +12,7 @@
     * `cd dabba-app`
     * `virtualenv venv`
     * `source venv/bin/activate`
-    * `sudo pip install -r requirements.txt`    
+    * `sudo pip install -r requirements.txt`
     * `docker run --name mongodb-docker-dabba -p 27017:27017 -d mongo`
     * `sudo docker exec -it mongodb-docker-dabba mongo admin`
     * `use charts`
@@ -20,7 +21,7 @@
 * ##### Running the app
     * `python app.py`
 
-*Mock Dashboard Setup* - Open `localhost:8080`, create a Dashboard, selected Widget Chart as C3 linechart and selected datasource as `http://localhost:8080/line` to see dashboard with mock line endpoint data..
+**Mock Dashboard Setup** - Open `localhost:8080`, create a Dashboard, Click on *Add Widget*, select *Type* as C3 linechart and *Data Source* as `http://localhost:8080/line` and see dashboard in action with mock line endpoint data in action.
 
 ## Notes for Developing app further
 
