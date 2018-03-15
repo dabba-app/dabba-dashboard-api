@@ -7,14 +7,16 @@
     * [MongoDB](https://www.mongodb.com/) - currently run as a docker container so standalone installation is not required
     * *virtualenv* - `pip install virtualenv`
 
-* ##### First Time Setup
+* ##### First Time Local Setup
     * `git clone https://github.com/dabba-fyp/dabba-app`
     * `cd dabba-app`
     * `virtualenv venv`
     * `source venv/bin/activate`
+    * `cp config.test.json config.json` and optionally, add your configuration
     * `sudo pip install -r requirements.txt`
     * `docker run --name mongodb-docker-dabba -p 27017:27017 -d mongo`
     * `sudo docker exec -it mongodb-docker-dabba mongo admin`
+    * `db.createCollection("bin_data")`
     * `use charts`
     * `db.createCollection("views")`
     * `exit`

@@ -2,8 +2,6 @@ from flask import request, jsonify
 from flask_cors import cross_origin
 from flask_jsondash.charts_builder import charts
 
-import controller
-
 
 def init(app):
     # Config
@@ -45,19 +43,19 @@ def init(app):
     )
 
 
-# TODO
+# TODO - Doesn't work
 def register_charts_line_endpoint(app):
     @cross_origin()
-    @app.route('/line')
-    def linechart():
-        """Fake endpoint."""
+    @app.route('/c3ts')
+    def c3ts():
+        data = dict(
+            x='x',
+            xFormat='%Y%m%d',
+            columns=[
+                ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
+                ['data1', 30, 200, 100, 400, 150, 2],
+                ['data2', 130, 340, 200, 500, 250, 350]
+            ]
+        )
 
-        all_data = controller.get_all_bins_data()
-        data_dict = {}
-        # for data in all_data:
-        #     data['U_ID'] not in data_dict
-
-        return jsonify({
-            "line1": [1, 4, 3, 10, 12, 14, 18, 10],
-            "line2": [1, 2, 10, 20, 30, 6, 10, 12, 18, 2],
-        })
+        return jsonify(data)

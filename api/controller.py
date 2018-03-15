@@ -1,3 +1,4 @@
+import os
 from pymongo import MongoClient
 from validator import validate_bin_data
 import logging
@@ -8,7 +9,9 @@ logging.basicConfig(level=logging.INFO,
 
 
 def __fetch_mongo_client():
-    return MongoClient("localhost", 27017, maxPoolSize=50)
+    mongo_host = os.environ['CHARTS_DB_HOST']
+    mongo_port = 27017
+    return MongoClient(mongo_host, mongo_port, maxPoolSize=50)
 
 
 def __close_mongo_client(client):
