@@ -27,6 +27,9 @@ with open(os.path.dirname(__file__) + '/config.json') as json_config_file:
 for k, v in config.iteritems():
     os.environ[k] = v
 
+# Local override
+os.environ['CHARTS_DB_HOST'] = 'localhost'
+
 # Init App
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '14BCE'
