@@ -57,5 +57,4 @@ def register_charts_line_endpoint(app):
                 ['data2', 130, 340, 200, 500, 250, 350]
             ]
         )
-
         return jsonify(data)

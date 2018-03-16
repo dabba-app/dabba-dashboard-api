@@ -21,14 +21,16 @@ CHARTS_DB_TABLE The DB collection name (defaults to 'views')
 CHARTS_ACTIVE_DB The DB backend to use - options: 'mongo' (default)
 """
 
-with open(os.path.dirname(__file__) + '/config.json') as json_config_file:
-    config = json.load(json_config_file)
+# Prod override
+try:
+	with open(os.path.dirname(__file__) + '/config.json') as json_config_file:
+	    config = json.load(json_config_file)
 
-for k, v in config.iteritems():
-    os.environ[k] = v
+	for k, v in config.iteritems():
+	    os.environ[k] = v
 
-# Local override
-os.environ['CHARTS_DB_HOST'] = 'localhost'
+except Exception as e:
+	pass
 
 # Init App
 app = Flask(__name__)
