@@ -43,7 +43,6 @@ def init(app):
     )
 
 
-# TODO - Doesn't work
 def register_charts_line_endpoint(app):
     @cross_origin()
     @app.route('/c3ts')
@@ -57,4 +56,5 @@ def register_charts_line_endpoint(app):
                 ['data2', 130, 340, 200, 500, 250, 350]
             ]
         )
-        return jsonify(data)
+
+        return jsonify(dict(data=data))
