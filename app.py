@@ -23,24 +23,22 @@ CHARTS_ACTIVE_DB The DB backend to use - options: 'mongo' (default)
 
 # Prod override
 try:
-	with open(os.path.dirname(__file__) + '/config.json') as json_config_file:
-	    config = json.load(json_config_file)
+    with open(os.path.dirname(__file__) + '/config.json') as json_config_file:
+        config = json.load(json_config_file)
 
-	for k, v in config.iteritems():
-	    os.environ[k] = v
+    for k, v in config.iteritems():
+        os.environ[k] = v
 
 except Exception as e:
-	pass
+    pass
 
 # Init App
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '14BCE'
 app.debug = True
 CORS(app)
 
 # Init charts dashboard
 charts_dashboard.init(app)
-charts_dashboard.register_charts_line_endpoint(app)
 
 # Register bin endpoints
 routes.register_bin_endpoints(app)

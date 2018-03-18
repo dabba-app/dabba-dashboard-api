@@ -1,10 +1,7 @@
-from flask import request, jsonify
-from flask_cors import cross_origin
 from flask_jsondash.charts_builder import charts
 
 
 def init(app):
-    # Config
     app.register_blueprint(charts)
 
     app.config.update(
@@ -23,9 +20,9 @@ def init(app):
         return True
 
     def _get_username():
-        return 'anonymous'
+        return 'Team TeenLaddu'
 
-    # Config examples.
+    # Config
     app.config['JSONDASH'] = dict(
         metadata=dict(
             created_by=_get_username,
@@ -41,20 +38,3 @@ def init(app):
             delete=_can_delete,
         )
     )
-
-
-def register_charts_line_endpoint(app):
-    @cross_origin()
-    @app.route('/c3ts')
-    def c3ts():
-        data = dict(
-            x='x',
-            xFormat='%Y%m%d',
-            columns=[
-                ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
-                ['data1', 30, 200, 100, 400, 150, 2],
-                ['data2', 130, 340, 200, 500, 250, 350]
-            ]
-        )
-
-        return jsonify(dict(data=data))

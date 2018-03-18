@@ -34,13 +34,13 @@ def get_all_bins_data():
     return documents
 
 
-def get_bin_data(bin_uid):
+def get_bin_data(bin_usr):
     client = __fetch_mongo_client()
     db = client.admin
 
     documents = []
 
-    cursor = db['bin_data'].find({"U_ID": bin_uid})
+    cursor = db['bin_data'].find({"USER_NAME": bin_usr})
     for document in cursor:
         document.pop('_id')
         documents.append(document)
