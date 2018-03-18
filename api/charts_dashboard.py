@@ -1,4 +1,6 @@
 from flask_jsondash.charts_builder import charts
+from flask_cors import cross_origin
+from flask import jsonify
 
 
 def init(app):
@@ -38,3 +40,17 @@ def init(app):
             delete=_can_delete,
         )
     )
+
+    @cross_origin()
+    @app.route('/test-chart')
+    def c3ts():
+        data = dict(
+            x='x',
+            xFormat='%Y%m%d',
+            columns=[
+                ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
+                ['data1', 30, 200, 100, 400, 150, 2],
+                ['data2', 130, 340, 200, 500, 250, 350]
+            ]
+        )
+        return jsonify(dict(data=data))

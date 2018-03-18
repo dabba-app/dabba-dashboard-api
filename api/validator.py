@@ -1,8 +1,8 @@
 def validate_bin_data(data):
     if not isinstance(data, dict):
         return {'error': 'Data must be a dict'}
-    if 'U_ID' not in data or not isinstance(data.get('U_ID', None), int):
-        return {'error': 'key U_ID of type int must be present'}
+    if 'U_ID' not in data or not isinstance(data.get('U_ID', None), basestring):
+        return {'error': 'key U_ID of type string must be present'}
     if 'USER_NAME' not in data or not isinstance(data.get('USER_NAME', None), basestring):
         return {'error': 'key USER_NAME of type string must be present'}
     if 'URL' not in data or not isinstance(data.get('URL', None), basestring):

@@ -13,7 +13,8 @@
     * `virtualenv venv`
     * `source venv/bin/activate`
     * `sudo pip install -r requirements.txt`
-    * `docker run --name mongodb-docker-dabba -p 27017:27017 -d mongo`
+    * `docker rm -f mongodb-docker-dabba` (It's alright if you get *Error: No such container: mongodb-docker-dabba*)
+    * `docker run --name mongodb-docker-dabba -p 27017:27017 -d mongo` 
     * `sudo docker exec -it mongodb-docker-dabba mongo admin`
     * `db.createCollection("bin_data")`
     * `use charts`
@@ -22,10 +23,43 @@
 * ##### Running the app
     * `python app.py`
 
-**Mock Dashboard Setup** - Open `localhost:8080`, create a Dashboard, Click on *Add Widget*, select *Type* as C3 linechart and *Data Source* as `http://localhost:8080/line` and see dashboard in action with mock line endpoint data in action.
+**Mock Dashboard Setup** - Open `localhost:8080`, create a Dashboard, Click on *Add Widget*, select *Type* as C3 timeseries chart, *Data Source* as `http://localhost:8000/test-chart`, Tick *Use Custom Configuration* on top right, Click *preview* at the bottom to verify that endpoint is right and finally, see the chart on the dashboard in action.
 
-## Notes for Developing app further
+## API Documentation
 
-We are using the [flask-jsondash](https://github.com/christabor/flask_jsondash) to build the dashboard. Try understanding the [example app](https://github.com/christabor/flask_jsondash/tree/master/example_app) code.
+###### Note that trailing slash in every endpoint is mandatory
 
-The flask-jsondash has support for custom widget which can be used to build our image widget. Have a look at the [example templates is the example app](https://github.com/christabor/flask_jsondash/tree/master/example_app/templates/examples) which contains HTML snippets to help build the image widget which will have to be added to the main html template in `/templates/layouts/base.html`.
+#### 1. /bins/ [GET, POST]
+
+* `GET /bins` fetches all the bin data in the system
+* `POST /bins` allows to put new data into the system. Example data format below:
+    ```
+    { 
+        "USER_NAME": "piyush",
+        "U_ID":"1234",
+        "LEVEL":34,
+        "TIMESTAMP":"2018-02-20 13:48:09.431429",
+        "URL":"http://dropbox.com/someUrl",
+        "LAT":"1.12345",
+        "LONG":"2.2345",
+        "TAGS":[  
+          "tag1",
+          "tag2",
+          "tag3"
+        ]
+    }
+    
+    ```
+    
+#### 2. /bin/<USER_NAME>/ [GET]
+
+* Fetches all data with bin having USER_NAME as passed, eg `/bins/piyush`
+
+#### 3. /bin/<USER_NAME>/chart/ [GET]
+
+* Fetches C3js formatted data for plotting all USER_NAME bin data in DB. eg `/bins/piyush/chart`
+
+#### 4. /bin/<USER_NAME>/chart/yyyy-mm-dd/ [GET]
+
+* Fetches C3js formatted data for plotting data for specified *yyyy-mm-dd* for USER_NAME bin. 
+
