@@ -27,12 +27,12 @@
 
 ## API Documentation
 
-###### Note that trailing slash in every endpoint is mandatory
+##### **Note that trailing slash in every endpoint is mandatory**
 
 #### 1. /bins/ [GET, POST]
 
-* `GET /bins` fetches all the bin data in the system
-* `POST /bins` allows to put new data into the system. Example data format below:
+* `GET /bins/` fetches all the bin data in the system
+* `POST /bins/` allows to put new data into the system. Example data format below:
     ```
     { 
         "USER_NAME": "piyush",
@@ -53,13 +53,13 @@
     
 #### 2. /bin/<USER_NAME>/ [GET]
 
-* Fetches all data with bin having USER_NAME as passed, eg `/bins/piyush`
+* Fetches all data with bin having USER_NAME as passed, eg `/bins/piyush/`
 
 #### 3. /bin/<USER_NAME>/chart/ [GET]
 
-* Fetches C3js formatted data for plotting all USER_NAME bin data in DB. eg `/bins/piyush/chart`
+* Fetches C3js formatted data for plotting all USER_NAME bin data in DB. eg `/bins/piyush/chart/`
 
 #### 4. /bin/<USER_NAME>/chart/yyyy-mm-dd/ [GET]
 
-* Fetches C3js formatted data for plotting data for specified *yyyy-mm-dd* for USER_NAME bin. 
+* Fetches C3js formatted data for plotting data for specified *yyyy-mm-dd* for USER_NAME bin. eg `/bins/piyush/chart/2018-02-20/`
 
