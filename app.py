@@ -29,12 +29,14 @@ try:
     for k, v in config.iteritems():
         os.environ[k] = v
 
+# Config file not passed! Using defaults in local
 except Exception as e:
     pass
 
 # Init App
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', '14BCE')
+
 app.debug = True
 CORS(app)
 

@@ -100,10 +100,8 @@ def register_bin_endpoints(app):
                     d['TIMESTAMP'] = d['TIMESTAMP'].split(" ")
 
                     if d['TIMESTAMP'][0] == date:
-                        # Remove ms
+                        # Remove milliseconds
                         d['TIMESTAMP'][1] = d['TIMESTAMP'][1][:d['TIMESTAMP'][1].rfind('.')]
-
-                        print d['TIMESTAMP']
 
                         dlist.append({'TIMESTAMP': d['TIMESTAMP'][1], 'LEVEL': d['LEVEL']})
 
