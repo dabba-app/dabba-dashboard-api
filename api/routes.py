@@ -33,7 +33,7 @@ def register_bin_endpoints(app):
                 return Response(response={'error': 'Server Error, see logs'}, status=201, mimetype='application/json')
 
     @cross_origin()
-    @bins.route('/<bin_usr>', methods=['GET', 'PUT', 'POST'])
+    @bins.route('/<bin_usr>/', methods=['GET'])
     def all_bins_route(bin_usr):
         if request.method == 'GET':
             try:
@@ -44,7 +44,7 @@ def register_bin_endpoints(app):
                 return Response(response={'error': 'Server Error, see logs'}, mimetype='application/json')
 
     @cross_origin()
-    @bins.route('/<bin_usr>/chart', methods=['GET'])
+    @bins.route('/<bin_usr>/chart/', methods=['GET'])
     def bin_chart_all_timestamps_route(bin_usr):
         if request.method == 'GET':
             try:
@@ -89,7 +89,7 @@ def register_bin_endpoints(app):
                 return Response(response={'error': 'Server Error, see logs'}, mimetype='application/json')
 
     @cross_origin()
-    @bins.route('/<bin_usr>/chart/<date>', methods=['GET'])
+    @bins.route('/<bin_usr>/chart/<date>/', methods=['GET'])
     def bin_chart_for_day_as_time_route(bin_usr, date):
         if request.method == 'GET':
             try:

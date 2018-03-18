@@ -158,5 +158,5 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-/aws_mongo_instance.pem
+/aws_key.pem
 /config.json

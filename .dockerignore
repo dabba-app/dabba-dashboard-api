@@ -1,3 +1,3 @@
 /venv
 config.json
-aws_mongo_instance.pem
+aws_key.pem
