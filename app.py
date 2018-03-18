@@ -34,6 +34,7 @@ except Exception as e:
 
 # Init App
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 app.debug = True
 CORS(app)
 
