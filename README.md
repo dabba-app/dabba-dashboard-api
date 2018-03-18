@@ -6,6 +6,7 @@
     * [Python 2.7](https://www.python.org/download/releases/2.7/)
     * [MongoDB](https://www.mongodb.com/) - currently run as a docker container so standalone installation is not required
     * *virtualenv* - `pip install virtualenv`
+    * (optional) [Robo 3T for Mac](https://download.robomongo.org/1.2.1/osx/robo3t-1.2.1-darwin-x86_64-3e50a65.dmg) - For MongoDB visualisation
 
 * ##### First Time Local Setup
     * `git clone https://github.com/dabba-fyp/dabba-app`
