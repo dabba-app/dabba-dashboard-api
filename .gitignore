@@ -160,3 +160,4 @@ venv.bak/
 
 /aws_key.pem
 /config.json
+/beanstalk-deploy.zip
