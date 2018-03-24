@@ -17,6 +17,13 @@ def __fetch_mongo_client():
 def __close_mongo_client(client):
     client.close()
 
+def insert_dropbox_url(data):
+    telegram_client = __fetch_mongo_client()
+    db = telegram_client.telegram_db
+    posts = db.posts
+    posts.update_one({'C_ID': str(data.U_ID)}, {"$set": {"LAT": str(data.URL)}})
+    __close_mongo_client(telegram_client)
+
 
 def get_all_bins_data():
     client = __fetch_mongo_client()
@@ -59,6 +66,7 @@ def insert_bin_data(data):
         logging.info('Data validation successful')
 
         db['bin_data'].insert_one(data)
+        insert_dropbox_url(data)
 
         logging.info('Data inserted into DB')
 
