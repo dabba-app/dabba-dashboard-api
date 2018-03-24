@@ -21,7 +21,7 @@ def insert_dropbox_url(data):
     telegram_client = __fetch_mongo_client()
     db = telegram_client.telegram_db
     posts = db.posts
-    posts.update_one({'C_ID': str(data.U_ID)}, {"$set": {"LAT": str(data.URL)}})
+    posts.update_one({'C_ID': str(data["U_ID"])}, {"$set": {"LAT": str(data["URL"])}})
     __close_mongo_client(telegram_client)
 
 
