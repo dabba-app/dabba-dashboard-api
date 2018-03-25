@@ -17,6 +17,7 @@ def __fetch_mongo_client():
 def __close_mongo_client(client):
     client.close()
 
+
 def insert_dropbox_url(data):
     telegram_client = __fetch_mongo_client()
     db = telegram_client.telegram_db
