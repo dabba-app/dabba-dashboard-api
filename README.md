@@ -30,7 +30,7 @@
 
 ##### **Note that trailing slash in every endpoint is mandatory**
 
-#### 1. /bins/ [GET, POST]
+#### 1. /bins/ [GET, POST, DELETE]
 
 * `GET /bins/` fetches all the bin data in the system
 * `POST /bins/` allows to put new data into the system. Example data format below:
@@ -51,6 +51,9 @@
     }
     
     ```
+* `DELETE /bins/?u_id="your_u_id"` deletes bin data with specified U_ID in system
+
+    
     
 #### 2. /bin/<USER_NAME>/ [GET]
 

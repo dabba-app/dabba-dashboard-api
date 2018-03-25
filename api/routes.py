@@ -15,7 +15,7 @@ def register_bin_endpoints(app):
     bins = Blueprint('bins', __name__, template_folder='templates')
 
     @cross_origin()
-    @bins.route('/', methods=['GET', 'PUT', 'POST'])
+    @bins.route('/', methods=['GET', 'PUT', 'POST', 'DELETE'])
     def bins_route():
         if request.method == 'GET':
             try:
@@ -27,6 +27,13 @@ def register_bin_endpoints(app):
         elif request.method == 'PUT' or request.method == 'POST':
             try:
                 data = controller.insert_bin_data(json.loads(request.data))
+                return Response(response=json.dumps(data), mimetype='application/json')
+            except Exception, e:
+                logging.error(e)
+                return Response(response={'error': 'Server Error, see logs'}, status=201, mimetype='application/json')
+        elif request.method == 'DELETE':
+            try:
+                data = controller.delete_bin_data(request.args.get("u_id"))
                 return Response(response=json.dumps(data), mimetype='application/json')
             except Exception, e:
                 logging.error(e)

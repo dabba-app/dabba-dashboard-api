@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO,
 
 
 def __fetch_mongo_client():
-    mongo_host = os.environ['CHARTS_DB_HOST']
+    mongo_host = os.environ.get('CHARTS_DB_HOST')
     mongo_port = 27017
     return MongoClient(mongo_host, mongo_port, maxPoolSize=50)
 
@@ -78,3 +78,14 @@ def insert_bin_data(data):
     else:
         logging.warning('Data validation failed', )
         return validation_msg
+
+
+def delete_bin_data(u_id):
+    client = __fetch_mongo_client()
+    db = client.admin
+
+    del_data = db['bin_data'].delete_one({'U_ID': u_id})
+
+    __close_mongo_client(client=client)
+
+    return del_data.raw_result
