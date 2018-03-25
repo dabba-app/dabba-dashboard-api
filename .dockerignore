@@ -1,4 +1,3 @@
 /venv
 aws_key.pem
 /beanstalk-deploy.zip
-config.json

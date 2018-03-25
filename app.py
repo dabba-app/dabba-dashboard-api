@@ -37,7 +37,6 @@ try:
 # Config file not passed! Using defaults in local
 except Exception as e:
     logging.warning('Config file not found. Using defaults with CHARTS_DB_HOST as %s' % (os.environ.get('CHARTS_DB_HOST', None)))
-    pass
 
 # Init App
 app = Flask(__name__)
