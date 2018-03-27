@@ -28,7 +28,7 @@ CHARTS_ACTIVE_DB The DB backend to use - options: 'mongo' (default)
 
 # Prod override
 try:
-    with open(os.path.dirname(__file__) + '/config.json') as json_config_file:
+    with open(os.path.dirname(os.path.realpath(__file__)) + '/config.json') as json_config_file:
         config = json.load(json_config_file)
 
     for k, v in config.iteritems():
@@ -58,10 +58,12 @@ routes.register_bin_endpoints(app)
 def index():
     return redirect(request.base_url + 'charts')
 
+
 # Serving heat map static html file
 @app.route('/heatmap')
 def serve():
     return app.send_static_file('html/heatmap.html')
+
 
 # start app
 if __name__ == '__main__':
