@@ -67,3 +67,6 @@
 
 * Fetches C3js formatted data for plotting data for specified *yyyy-mm-dd* for USER_NAME bin. eg `/bins/piyush/chart/2018-02-20/`
 
+#### 5. /heatmap [GET]
+
+* Shows heatmap
