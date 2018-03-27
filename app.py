@@ -58,6 +58,10 @@ routes.register_bin_endpoints(app)
 def index():
     return redirect(request.base_url + 'charts')
 
+# Serving heat map static html file
+@app.route('/heatmap')
+def serve():
+    return app.send_static_file('html/heatmap.html')
 
 # start app
 if __name__ == '__main__':
