@@ -61,7 +61,7 @@ def index():
 # Serving heat map static html file
 @app.route('/heatmap')
 def serve():
-    return app.send_static_file('static/html/heatmap.html')
+    return app.send_static_file('html/heatmap.html')
 
 # start app
 if __name__ == '__main__':
