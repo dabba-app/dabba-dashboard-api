@@ -1,0 +1,22 @@
+(dp0
+S'location_received'
+p1
+S'Your new location ({}, {}) has been recieved!'
+p2
+sS'start'
+p3
+S'Hello.\n\nWelcome to Dabba FYP. To set this system up, please choose one of the options below, and follow the onscreen instructions!\n\nTeam TeenLaddu'
+p4
+sS'location_request'
+p5
+S'To update location, simply send your location to this chat!'
+p6
+sS'status'
+p7
+S'URL goes here'
+p8
+sS'reset'
+p9
+S'To be updated'
+p10
+s.

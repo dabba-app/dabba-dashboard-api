@@ -1,3 +1,4 @@
+import send_asynch_message as sam
 def validate_bin_data(data):
     if not isinstance(data, dict):
         return {'error': 'Data must be a dict'}
@@ -17,5 +18,27 @@ def validate_bin_data(data):
         return {'error': 'key TIMESTAMP of type string is required'}
     if 'TAGS' not in data or not isinstance(data.get('TAGS', None), list):
         return {'error': 'key TAGS of type list is required'}
+
+    classifier = dict()
+    classifier['banana'] = "biodegradable"
+    classifier['plastic'] = "non-biodegradable"
+
+    bio = 0
+    nonbio = 0
+    stag = ""
+    for tag in data['TAGS']:
+        if tag in classifier.keys() and classifier.get(tag) == "biodegradable":
+            bio += 1
+            stag = tag
+        if tag in classifier.keys() and classifier.get(tag) == "non-biodegradable":
+            nonbio += 1
+            stag = tag
+
+
+    if bio > nonbio and 'TYPE' in data and data['TYPE'] == "1":
+        sam.send_message("piyush9620", stag +  " : Dear user, you have put the waste in the wrong dustbin, plz put it in the biodegradable waste bin as " + stag + " is classified as biodegradable")
+
+    if bio < nonbio and 'TYPE' in data and data['TYPE'] == "0":
+        sam.send_message("piyush9620", stag +  " : Dear user, you have put the waste in the wrong dustbin, plz put it in the non-biodegradable waste bin as " + stag + " is classified as non-biodegradable")
 
     return {'success': 'data validation successful'}
