@@ -9,7 +9,7 @@ host = os.environ.get('CHARTS_DB_HOST')
 port = 27017
 client = MongoClient(host, port)
 db = client.telegram_db
-text = load(open('text.txt', 'rb'))
+text = load(open(os.path.dirname(os.path.realpath(__file__)) + '/text.txt', 'rb'))
 
 markup = types.ReplyKeyboardMarkup()
 start = types.KeyboardButton('/start')
