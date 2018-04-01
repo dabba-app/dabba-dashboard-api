@@ -83,22 +83,22 @@ class Telegram:  # ADD PI-CLIENT VALIDATION TO EACH!
             [mac_id, bin_type] = message.text.split(' ')
             if int(bin_type) not in [0, 1]:
                 raise ValueError
-            if db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None \
-                    and db.posts.find_one({"U_ID": str(int(mac_id))}) is None \
+            if db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None \
+                    and db.posts.find_one({"U_ID": str(mac_id)}) is None \
                     and db.posts.find_one({"C_ID": str(message.from_user.id)})["U_ID"] is None:
                 posts = db.posts
                 posts.update_one({"C_ID": str(message.from_user.id), "U_ID": None},
-                                 {"$set": {"U_ID": str(int(mac_id)), "TYPE": int(bin_type)}})
+                                 {"$set": {"U_ID": str(mac_id), "TYPE": int(bin_type)}})
                 bot.reply_to(message,
                              "MAC ID {} and bin type {} successfully set! Be sure to send your location again!".format(
                                  mac_id, 'non biodegradable' if int(bin_type) else 'biodegradable'))
 
-            elif db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None \
-                    and db.posts.find_one({"U_ID": str(int(mac_id))}) is None:
+            elif db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None \
+                    and db.posts.find_one({"U_ID": str(mac_id)}) is None:
                 posts = db.posts
                 post = {"C_ID": str(message.from_user.id),
                         "USER_NAME": str(message.from_user.username),
-                        "U_ID": str(int(mac_id)),
+                        "U_ID": str(mac_id),
                         "LAT": None,
                         "LONG": None,
                         "URL": None,
@@ -111,9 +111,9 @@ class Telegram:  # ADD PI-CLIENT VALIDATION TO EACH!
                 for x in db.posts.find({"C_ID": str(message.from_user.id)}):
                     print (x)
 
-            elif not db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None:
+            elif not db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None:
                 posts = db.posts
-                posts.update_one({'C_ID': str(message.from_user.id), 'U_ID': str(int(mac_id))},
+                posts.update_one({'C_ID': str(message.from_user.id), 'U_ID': str(mac_id)},
                                  {"$set": {'TYPE': int(bin_type)}})
                 for x in db.posts.find({"C_ID": str(message.from_user.id)}):
                     print (x)

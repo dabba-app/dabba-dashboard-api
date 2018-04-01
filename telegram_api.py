@@ -8,10 +8,8 @@ from telebot import types
 host = os.environ.get('CHARTS_DB_HOST')
 port = 27017
 client = MongoClient(host, port)
-# client = MongoClient()
-# client = MongoClient()
 db = client.telegram_db
-text = load(open('text.txt', 'rb'))
+text = load(open(os.path.dirname(os.path.realpath(__file__)) + '/text.txt', 'rb'))
 
 markup = types.ReplyKeyboardMarkup()
 start = types.KeyboardButton('/start')
@@ -27,7 +25,8 @@ bot = telebot.TeleBot(token)
 async_bot = telebot.AsyncTeleBot(token)
 config_dict = dict()
 
-class telegram: #ADD PI-CLIENT VALIDATION TO EACH!
+
+class Telegram:  # ADD PI-CLIENT VALIDATION TO EACH!
 
     def __init__(self):  # add Boolean variable, MAC ID of Pi, OR SERVER SIDE CODE???
         if os.path.isfile('config.p'):
@@ -45,12 +44,12 @@ class telegram: #ADD PI-CLIENT VALIDATION TO EACH!
                     "LAT": None,
                     "LONG": None,
                     "URL": None,
-                    "TYPE":None}
+                    "TYPE": None}
             posts.insert_one(post)
             bot.reply_to(message, text['start'], reply_markup=markup)
         else:
             bot.reply_to(message, "Hello", reply_markup=markup)
-        # dump(message, open('message.p', 'wb'))
+            # dump(message, open('message.p', 'wb'))
 
     def send_message(self, chat_id, message):
         async_bot.send_message(chat_id, message)
@@ -82,37 +81,39 @@ class telegram: #ADD PI-CLIENT VALIDATION TO EACH!
     def mac_ID(message):
         try:
             [mac_id, bin_type] = message.text.split(' ')
-            if int(bin_type) not in [0,1]:
+            if int(bin_type) not in [0, 1]:
                 raise ValueError
-            if db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None \
-                    and db.posts.find_one({"U_ID": str(int(mac_id))}) is None\
+            if db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None \
+                    and db.posts.find_one({"U_ID": str(mac_id)}) is None \
                     and db.posts.find_one({"C_ID": str(message.from_user.id)})["U_ID"] is None:
                 posts = db.posts
-                posts.update_one({"C_ID": str(message.from_user.id), "U_ID": None}, {"$set": {"U_ID":str(int(mac_id)), "TYPE":int(bin_type)}})
+                posts.update_one({"C_ID": str(message.from_user.id), "U_ID": None},
+                                 {"$set": {"U_ID": str(mac_id), "TYPE": int(bin_type)}})
                 bot.reply_to(message,
                              "MAC ID {} and bin type {} successfully set! Be sure to send your location again!".format(
                                  mac_id, 'non biodegradable' if int(bin_type) else 'biodegradable'))
 
-            elif db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None \
-                    and db.posts.find_one({"U_ID": str(int(mac_id))}) is None:
+            elif db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None \
+                    and db.posts.find_one({"U_ID": str(mac_id)}) is None:
                 posts = db.posts
                 post = {"C_ID": str(message.from_user.id),
                         "USER_NAME": str(message.from_user.username),
-                        "U_ID": str(int(mac_id)),
+                        "U_ID": str(mac_id),
                         "LAT": None,
                         "LONG": None,
                         "URL": None,
                         "TYPE": int(bin_type)}
                 posts.insert_one(post)
-                bot.reply_to(message, "MAC ID {} and bin type {} successfully set! Be sure to send your location again!".format(
-                    mac_id, 'non biodegradable' if int(bin_type) else 'biodegradable'))
+                bot.reply_to(message,
+                             "MAC ID {} and bin type {} successfully set! Be sure to send your location again!".format(
+                                 mac_id, 'non biodegradable' if int(bin_type) else 'biodegradable'))
 
                 for x in db.posts.find({"C_ID": str(message.from_user.id)}):
                     print (x)
 
-            elif not db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None:
+            elif not db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None:
                 posts = db.posts
-                posts.update_one({'C_ID': str(message.from_user.id), 'U_ID': str(int(mac_id))},
+                posts.update_one({'C_ID': str(message.from_user.id), 'U_ID': str(mac_id)},
                                  {"$set": {'TYPE': int(bin_type)}})
                 for x in db.posts.find({"C_ID": str(message.from_user.id)}):
                     print (x)
@@ -144,7 +145,6 @@ class telegram: #ADD PI-CLIENT VALIDATION TO EACH!
 
         except:
             bot.reply_to(message, "Error")
-
 
     def poll(self):
         print ("Telegram API Running")
