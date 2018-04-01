@@ -4,9 +4,10 @@ from telegram_api import telegram as t
 
 
 def getMongoClient():
-    #return MongoClient(host=os.environ['HOST'], port=int(os.environ['PORT']),
-    #                   username=os.environ['USER'], password=os.environ['PASS']) #add params
-    return MongoClient()
+	host = os.environ.get('CHARTS_DB_HOST')
+	port = 27017
+    return MongoClient(host, port) #add params
+    # return MongoClient()
 
 def send_message(user_name, message):
     client = getMongoClient()

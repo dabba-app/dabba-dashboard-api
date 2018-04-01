@@ -5,9 +5,10 @@ import telebot
 from pymongo import MongoClient
 from telebot import types
 
-# client = MongoClient(host=os.environ['HOST'], port=int(os.environ['PORT']),
-#                      username=os.environ['USER'], password=os.environ['PASS'])
-client = MongoClient()
+host = os.environ.get('CHARTS_DB_HOST')
+port = 27017
+client = MongoClient(host, port)
+# client = MongoClient()
 # client = MongoClient()
 db = client.telegram_db
 text = load(open('text.txt', 'rb'))
@@ -20,8 +21,8 @@ status = types.KeyboardButton('/status')
 markup.row(start, location)
 markup.row(reset, status)
 
-token = "506400947:AAFaKrX-EFVhM-O1e6rV5XyWMzVWtMB1Wdo"
-
+# token = "506400947:AAFaKrX-EFVhM-O1e6rV5XyWMzVWtMB1Wdo"
+token = os.environ.get('TELEGRAM_KEY')
 bot = telebot.TeleBot(token)
 async_bot = telebot.AsyncTeleBot(token)
 config_dict = dict()
