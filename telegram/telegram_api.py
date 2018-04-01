@@ -1,9 +1,21 @@
 import os
+import json
+import logging
 from pickle import load
 
 import telebot
 from pymongo import MongoClient
 from telebot import types
+
+with open(os.path.dirname(os.path.realpath(__file__)) + '/../config.json') as json_config_file:
+    config = json.load(json_config_file)
+
+for k, v in config.iteritems():
+    os.environ[k] = v
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)-8s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S')
 
 host = os.environ.get('CHARTS_DB_HOST')
 port = 27017
@@ -147,5 +159,5 @@ class Telegram:  # ADD PI-CLIENT VALIDATION TO EACH!
             bot.reply_to(message, "Error")
 
     def poll(self):
-        print ("Telegram API Running")
+        logging.info("Telegram API Running in background")
         bot.polling(none_stop=True)
