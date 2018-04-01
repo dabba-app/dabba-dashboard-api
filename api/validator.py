@@ -1,4 +1,6 @@
-import send_asynch_message as sam
+from telegram import send_asynch_message as sam
+
+
 def validate_bin_data(data):
     if not isinstance(data, dict):
         return {'error': 'Data must be a dict'}
@@ -34,11 +36,12 @@ def validate_bin_data(data):
             nonbio += 1
             stag = tag
 
-
     if bio > nonbio and 'TYPE' in data and data['TYPE'] == "1":
-        sam.send_message("piyush9620", stag +  " : Dear user, you have put the waste in the wrong dustbin, plz put it in the biodegradable waste bin as " + stag + " is classified as biodegradable")
+        sam.send_message("piyush9620",
+                         stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the biodegradable waste bin as " + stag + " is classified as biodegradable")
 
     if bio < nonbio and 'TYPE' in data and data['TYPE'] == "0":
-        sam.send_message("piyush9620", stag +  " : Dear user, you have put the waste in the wrong dustbin, plz put it in the non-biodegradable waste bin as " + stag + " is classified as non-biodegradable")
+        sam.send_message("piyush9620",
+                         stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the non-biodegradable waste bin as " + stag + " is classified as non-biodegradable")
 
     return {'success': 'data validation successful'}
