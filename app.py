@@ -54,6 +54,7 @@ charts_dashboard.init(app)
 # Register bin endpoints
 routes.register_bin_endpoints(app)
 
+
 # Run Telegram cron in separate thread
 telegram_cron_thread = threading.Thread(target=telegram_obj.fetch_singleton().poll)
 telegram_cron_thread.daemon = True  # Daemonize thread
@@ -76,4 +77,4 @@ def serve():
 if __name__ == '__main__':
     PORT = int(os.getenv('PORT', 8000))
     HOST = os.getenv('HOST', '0.0.0.0')
-    app.run(debug=True, host=HOST, port=PORT, use_reloader=False)
+    app.run(debug=True, host=HOST, port=PORT)
