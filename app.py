@@ -36,9 +36,13 @@ try:
     for k, v in config.iteritems():
         os.environ[k] = v
 
+    logging.warning('Config file FOUND with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
+        os.environ.get('CHARTS_DB_HOST', None), os.environ.get('TELEGRAM_KEY', None)))
+
+
 # Config file not passed! Using defaults in local
 except Exception as e:
-    logging.warning('Config file not found. Using defaults with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
+    logging.warning('Config file NOT FOUND. Using defaults with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
         os.environ.get('CHARTS_DB_HOST', None), os.environ.get('TELEGRAM_KEY', None)))
 
 # Init App
