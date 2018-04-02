@@ -7,25 +7,15 @@ import telebot
 from pymongo import MongoClient
 from telebot import types
 
+with open(os.path.dirname(os.path.realpath(__file__)) + '/../config.json') as json_config_file:
+    config = json.load(json_config_file)
+
+for k, v in config.iteritems():
+    os.environ[k] = v
+
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S')
-
-try:
-    with open(os.path.dirname(os.path.realpath(__file__)) + '/../config.json') as json_config_file:
-        config = json.load(json_config_file)
-
-    for k, v in config.iteritems():
-        os.environ[k] = v
-
-    logging.warning('Config file FOUND with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
-        os.environ.get('CHARTS_DB_HOST', None), os.environ.get('TELEGRAM_KEY', None)))
-
-
-# Config file not passed! Using defaults in local
-except Exception as e:
-    logging.warning('Config file NOT FOUND. Using defaults with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
-        os.environ.get('CHARTS_DB_HOST', None), os.environ.get('TELEGRAM_KEY', None)))
 
 host = os.environ.get('CHARTS_DB_HOST')
 port = 27017

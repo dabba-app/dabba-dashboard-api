@@ -36,14 +36,11 @@ try:
     for k, v in config.iteritems():
         os.environ[k] = v
 
-    logging.warning('Config file FOUND with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
-        os.environ.get('CHARTS_DB_HOST', None), os.environ.get('TELEGRAM_KEY', None)))
-
-
 # Config file not passed! Using defaults in local
 except Exception as e:
-    logging.warning('Config file NOT FOUND. Using defaults with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
-        os.environ.get('CHARTS_DB_HOST', None), os.environ.get('TELEGRAM_KEY', None)))
+    logging.warning(
+        'Config file not found. Using defaults with CHARTS_DB_HOST as %s and TELEGRAM_KEY as %s' % (
+            os.environ.get('CHARTS_DB_HOST', None)), os.environ.get('TELEGRAM_KEY', None))
 
 # Init App
 app = Flask(__name__)
@@ -59,8 +56,7 @@ charts_dashboard.init(app)
 routes.register_bin_endpoints(app)
 
 # Run Telegram cron in separate thread
-obj = telegram_obj.fetch_singleton()
-telegram_cron_thread = threading.Thread(target=obj.poll)
+telegram_cron_thread = threading.Thread(target=telegram_obj.fetch_singleton().poll)
 telegram_cron_thread.daemon = True  # Daemonize thread
 telegram_cron_thread.start()  # Start the execution
 

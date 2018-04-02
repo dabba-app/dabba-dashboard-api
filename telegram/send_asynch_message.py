@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import os
-from telegram import telegram_obj
+import telegram_obj
 
 
 def __fetch_mongo_client():
