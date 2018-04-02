@@ -8,7 +8,6 @@ from flask import (
     redirect,
 )
 from flask_cors import CORS
-from flask_cors import cross_origin
 from telegram import telegram_obj
 
 from api import routes
@@ -62,7 +61,6 @@ telegram_cron_thread.start()  # Start the execution
 
 
 # Redirect root to dashboard
-@cross_origin()
 @app.route('/', methods=['GET'])
 def index():
     return redirect(request.base_url + 'charts')
