@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import os
-from telegram_api import Telegram as t
+from telegram import telegram_obj
 
 
 def __fetch_mongo_client():
@@ -13,5 +13,5 @@ def send_message(user_name, message):
     client = __fetch_mongo_client()
     telegram = client.telegram_db.posts
     chat_id = telegram.find_one({"USER_NAME": str(user_name)})['C_ID']
-    out = t()
+    out = telegram_obj.fetch_singleton()
     out.send_message(chat_id, str(message))

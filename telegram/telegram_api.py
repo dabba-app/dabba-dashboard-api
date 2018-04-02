@@ -1,15 +1,27 @@
 import os
+import json
+import logging
 from pickle import load
 
 import telebot
 from pymongo import MongoClient
 from telebot import types
 
+with open(os.path.dirname(os.path.realpath(__file__)) + '/../config.json') as json_config_file:
+    config = json.load(json_config_file)
+
+for k, v in config.iteritems():
+    os.environ[k] = v
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)-8s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S')
+
 host = os.environ.get('CHARTS_DB_HOST')
 port = 27017
 client = MongoClient(host, port)
 db = client.telegram_db
-text = load(open('text.txt', 'rb'))
+text = load(open(os.path.dirname(os.path.realpath(__file__)) + '/text.txt', 'rb'))
 
 markup = types.ReplyKeyboardMarkup()
 start = types.KeyboardButton('/start')
@@ -83,22 +95,22 @@ class Telegram:  # ADD PI-CLIENT VALIDATION TO EACH!
             [mac_id, bin_type] = message.text.split(' ')
             if int(bin_type) not in [0, 1]:
                 raise ValueError
-            if db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None \
-                    and db.posts.find_one({"U_ID": str(int(mac_id))}) is None \
+            if db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None \
+                    and db.posts.find_one({"U_ID": str(mac_id)}) is None \
                     and db.posts.find_one({"C_ID": str(message.from_user.id)})["U_ID"] is None:
                 posts = db.posts
                 posts.update_one({"C_ID": str(message.from_user.id), "U_ID": None},
-                                 {"$set": {"U_ID": str(int(mac_id)), "TYPE": int(bin_type)}})
+                                 {"$set": {"U_ID": str(mac_id), "TYPE": int(bin_type)}})
                 bot.reply_to(message,
                              "MAC ID {} and bin type {} successfully set! Be sure to send your location again!".format(
                                  mac_id, 'non biodegradable' if int(bin_type) else 'biodegradable'))
 
-            elif db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None \
-                    and db.posts.find_one({"U_ID": str(int(mac_id))}) is None:
+            elif db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None \
+                    and db.posts.find_one({"U_ID": str(mac_id)}) is None:
                 posts = db.posts
                 post = {"C_ID": str(message.from_user.id),
                         "USER_NAME": str(message.from_user.username),
-                        "U_ID": str(int(mac_id)),
+                        "U_ID": str(mac_id),
                         "LAT": None,
                         "LONG": None,
                         "URL": None,
@@ -111,9 +123,9 @@ class Telegram:  # ADD PI-CLIENT VALIDATION TO EACH!
                 for x in db.posts.find({"C_ID": str(message.from_user.id)}):
                     print (x)
 
-            elif not db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(int(mac_id))}) is None:
+            elif not db.posts.find_one({"C_ID": str(message.from_user.id), "U_ID": str(mac_id)}) is None:
                 posts = db.posts
-                posts.update_one({'C_ID': str(message.from_user.id), 'U_ID': str(int(mac_id))},
+                posts.update_one({'C_ID': str(message.from_user.id), 'U_ID': str(mac_id)},
                                  {"$set": {'TYPE': int(bin_type)}})
                 for x in db.posts.find({"C_ID": str(message.from_user.id)}):
                     print (x)
@@ -147,5 +159,5 @@ class Telegram:  # ADD PI-CLIENT VALIDATION TO EACH!
             bot.reply_to(message, "Error")
 
     def poll(self):
-        print ("Telegram API Running")
+        logging.info("Telegram API Running in background")
         bot.polling(none_stop=True)
