@@ -1,5 +1,4 @@
-from telegram import send_asynch_message as sam
-
+import requests
 
 def validate_bin_data(data):
     if not isinstance(data, dict):
@@ -22,8 +21,19 @@ def validate_bin_data(data):
         return {'error': 'key TAGS of type list is required'}
 
     classifier = dict()
+
     classifier['banana'] = "biodegradable"
+    classifier['flower'] = "biodegradable"
+    classifier['vegetable'] = "biodegradable"
+    classifier['fruit'] = "biodegradable"
+    classifier['paper'] = "biodegradable"
+    classifier['cardboard'] = "biodegradable"
+
+    classifier['bottle'] = "non-biodegradable"
+    classifier['duster'] = "non-biodegradable"
     classifier['plastic'] = "non-biodegradable"
+    classifier['pen'] = "non-biodegradable"
+    classifier['ball'] = "non-biodegradable"
 
     bio = 0
     nonbio = 0
@@ -37,11 +47,18 @@ def validate_bin_data(data):
             stag = tag
 
     if bio > nonbio and 'TYPE' in data and data['TYPE'] == "1":
-        sam.send_message("piyush9620",
-                         stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the biodegradable waste bin as " + stag + " is classified as biodegradable")
+        msg = stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the biodegradable waste bin as " + stag + " is classified as biodegradable"
+        data = "{\"USER\":\"piyush9620\",\"MSG\":\"" + msg + "\"}"
+        try:
+            r = requests.post(url='http://dabba.us-west-2.elasticbeanstalk.com/sendasync/', data=data)
+        except:
+            return {'error' : 'wrongly classified waste, not able to send notification for the same'}
 
     if bio < nonbio and 'TYPE' in data and data['TYPE'] == "0":
-        sam.send_message("piyush9620",
-                         stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the non-biodegradable waste bin as " + stag + " is classified as non-biodegradable")
+        msg = stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the non-biodegradable waste bin as " + stag + " is classified as non-biodegradable"
+        try:
+            r = requests.post(url='http://dabba.us-west-2.elasticbeanstalk.com/sendasync/', data=data)
+        except:
+            return {'error' : 'wrongly classified waste, not able to send notification for the same'}
 
     return {'success': 'data validation successful'}
