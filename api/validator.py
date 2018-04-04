@@ -46,19 +46,6 @@ def validate_bin_data(data):
         classifier.update({document['NAME']: document['TYPE']})
     client.close()
 
-    classifier['banana'] = "biodegradable"
-    classifier['flower'] = "biodegradable"
-    classifier['vegetable'] = "biodegradable"
-    classifier['fruit'] = "biodegradable"
-    classifier['paper'] = "biodegradable"
-    classifier['cardboard'] = "biodegradable"
-
-    classifier['bottle'] = "non-biodegradable"
-    classifier['duster'] = "non-biodegradable"
-    classifier['plastic'] = "non-biodegradable"
-    classifier['pen'] = "non-biodegradable"
-    classifier['ball'] = "non-biodegradable"
-
     bio = 0
     nonbio = 0
     stag = ""
