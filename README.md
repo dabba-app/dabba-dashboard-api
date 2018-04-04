@@ -18,6 +18,7 @@
     * `docker run --name mongodb-docker-dabba -p 27017:27017 -d mongo` 
     * `sudo docker exec -it mongodb-docker-dabba mongo admin`
     * `db.createCollection("bin_data")`
+    * `db.createCollection("garbage")`
     * `use charts`
     * `db.createCollection("views")`
     * `exit`
@@ -47,13 +48,12 @@
           "tag1",
           "tag2",
           "tag3"
-        ]
+        ],
+        "TYPE": "0"
     }
     
     ```
 * `DELETE /bins/?u_id="your_u_id"` deletes bin data with specified U_ID in system
-
-    
     
 #### 2. /bin/<USER_NAME>/ [GET]
 
@@ -67,6 +67,22 @@
 
 * Fetches C3js formatted data for plotting data for specified *yyyy-mm-dd* for USER_NAME bin. eg `/bins/piyush/chart/2018-02-20/`
 
-#### 5. /heatmap [GET]
+#### 5. /garbage/ [GET, POSt]
+
+* `GET /garbage/` fetches all the garbage types in the system
+* `POST /garbage/` allows to put new garbage type into the system. `TYPE` field can be `biodegradable` and `non-biodegradable`. Example data format below:
+    ```
+    {
+        "NAME": "plastic",
+        "TYPE":"non-biodegradable"
+    }
+
+    ```
+
+#### 6. /garbage/<type>/ [GET]
+
+* Fetches garbage type of type passed, eg `/garbage/plastic/`
+
+#### 7. /heatmap [GET]
 
 * Shows heatmap

@@ -1,9 +1,9 @@
 import os
 from pymongo import MongoClient
-from validator import validate_bin_data
+import validator
 import logging
 
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S')
 
@@ -62,7 +62,7 @@ def insert_bin_data(data):
     client = __fetch_mongo_client()
     db = client.admin
 
-    validation_msg = validate_bin_data(data)
+    validation_msg = validator.validate_bin_data(data)
     if 'success' in validation_msg:
         logging.info('Data validation successful')
 
@@ -89,3 +89,55 @@ def delete_bin_data(u_id):
     __close_mongo_client(client=client)
 
     return del_data.raw_result
+
+
+def get_garbage_type(name):
+    client = __fetch_mongo_client()
+    db = client.admin
+
+    document = db['garbage'].find_one({"NAME": name})
+    if isinstance(document, dict) and '_id' in document:
+        document.pop('_id')
+    elif not document:
+        document = {}
+
+    __close_mongo_client(client=client)
+
+    return document
+
+
+def insert_garbage_type(data):
+    client = __fetch_mongo_client()
+    db = client.admin
+
+    validation_msg = validator.validate_garbage_type(data)
+    if 'success' in validation_msg:
+        logging.info('Data validation successful')
+
+        db['garbage'].insert_one(data)
+
+        logging.info('Data inserted into DB')
+
+        __close_mongo_client(client=client)
+
+        data.pop('_id')
+        return data
+    else:
+        logging.warning('Data validation failed', )
+        return validation_msg
+
+
+def get_all_garbage_types():
+    client = __fetch_mongo_client()
+    db = client.admin
+
+    documents = []
+
+    cursor = db['garbage'].find({})
+    for document in cursor:
+        document.pop('_id')
+        documents.append(document)
+
+    __close_mongo_client(client=client)
+
+    return documents

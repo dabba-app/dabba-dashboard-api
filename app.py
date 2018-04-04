@@ -12,7 +12,7 @@ from flask_cors import CORS
 from api import routes
 from api import charts_dashboard
 
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S')
 
@@ -52,6 +52,7 @@ charts_dashboard.init(app)
 
 # Register bin endpoints
 routes.register_bin_endpoints(app)
+routes.register_garbage_endpoint(app)
 
 
 # Redirect root to dashboard

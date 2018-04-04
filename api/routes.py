@@ -6,7 +6,7 @@ import json
 import time
 from api import controller
 
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S')
 
@@ -145,3 +145,38 @@ def register_bin_endpoints(app):
                 return Response(response={'error': 'Server Error, see logs'}, mimetype='application/json')
 
     app.register_blueprint(bins, url_prefix='/bins')
+
+
+def register_garbage_endpoint(app):
+    garbage = Blueprint('garbage', __name__)
+
+    @cross_origin()
+    @garbage.route('/', methods=['GET', 'PUT', 'POST'])
+    def all_bins_route():
+        if request.method == 'GET':
+            try:
+                data = controller.get_all_garbage_types()
+                return Response(response=json.dumps(data), mimetype='application/json')
+            except Exception, e:
+                logging.error(e)
+                return Response(response={'error': 'Server Error, see logs'}, mimetype='application/json')
+        elif request.method == 'PUT' or request.method == 'POST':
+            try:
+                data = controller.insert_garbage_type(json.loads(request.data))
+                return Response(response=json.dumps(data), mimetype='application/json')
+            except Exception, e:
+                logging.error(e)
+                return Response(response={'error': 'Server Error, see logs'}, status=201, mimetype='application/json')
+
+    @cross_origin()
+    @garbage.route('/<name>/', methods=['GET'])
+    def bins_route(name):
+        if request.method == 'GET':
+            try:
+                data = controller.get_garbage_type(name)
+                return Response(response=json.dumps(data), mimetype='application/json')
+            except Exception, e:
+                logging.error(e)
+                return Response(response={'error': 'Server Error, see logs'}, mimetype='application/json')
+
+    app.register_blueprint(garbage, url_prefix='/garbage')
