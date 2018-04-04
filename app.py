@@ -8,7 +8,6 @@ from flask import (
     redirect,
 )
 from flask_cors import CORS
-from telegram import telegram_obj
 
 from api import routes
 from api import charts_dashboard
@@ -53,12 +52,6 @@ charts_dashboard.init(app)
 
 # Register bin endpoints
 routes.register_bin_endpoints(app)
-
-
-# Run Telegram cron in separate thread
-telegram_cron_thread = threading.Thread(target=telegram_obj.fetch_singleton().poll)
-telegram_cron_thread.daemon = True  # Daemonize thread
-telegram_cron_thread.start()  # Start the execution
 
 
 # Redirect root to dashboard
