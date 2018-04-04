@@ -55,7 +55,7 @@ def validate_bin_data(data):
 
     async_msg_url = os.environ.get('TELEGRAM_URL',
                                    'http://dabba-telegram.us-west-2.elasticbeanstalk.com') + '/sendasync/'
-    user = os.environ.get('TELEGRAM_USER', 'piyush9620')
+    user = data.get('USER_NAME', 'piyush9620')
 
     if bio > nonbio and 'TYPE' in data and data['TYPE'] == "1":
         msg = stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the biodegradable waste bin as " + stag + " is classified as biodegradable"
