@@ -1,4 +1,11 @@
 import requests
+import os
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)-8s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S')
+
 
 def validate_bin_data(data):
     if not isinstance(data, dict):
@@ -46,19 +53,28 @@ def validate_bin_data(data):
             nonbio += 1
             stag = tag
 
+    async_msg_url = os.environ.get('TELEGRAM_URL',
+                                   'http://dabba-telegram.us-west-2.elasticbeanstalk.com') + '/sendasync/'
+    user = os.environ.get('TELEGRAM_USER', 'piyush9620')
+
     if bio > nonbio and 'TYPE' in data and data['TYPE'] == "1":
         msg = stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the biodegradable waste bin as " + stag + " is classified as biodegradable"
-        data = "{\"USER\":\"piyush9620\",\"MSG\":\"" + msg + "\"}"
+        data_to_send = "{\"USER\":\"" + user + "\",\"MSG\":\"" + msg + "\"}"
         try:
-            r = requests.post(url='http://dabba.us-west-2.elasticbeanstalk.com/sendasync/', data=data)
-        except:
-            return {'error' : 'wrongly classified waste, not able to send notification for the same'}
+            r = requests.post(url=async_msg_url, data=data_to_send)
+            logging.debug('Telegram Response msg {}'.format(r))
+        except Exception as e:
+            logging.error(e)
+            return {'error': 'wrongly classified waste, not able to send notification for the same'}
 
     if bio < nonbio and 'TYPE' in data and data['TYPE'] == "0":
         msg = stag + " : Dear user, you have put the waste in the wrong dustbin, plz put it in the non-biodegradable waste bin as " + stag + " is classified as non-biodegradable"
+        data_to_send = "{\"USER\":\"" + user + "\",\"MSG\":\"" + msg + "\"}"
         try:
-            r = requests.post(url='http://dabba.us-west-2.elasticbeanstalk.com/sendasync/', data=data)
-        except:
-            return {'error' : 'wrongly classified waste, not able to send notification for the same'}
+            r = requests.post(url=async_msg_url, data=data_to_send)
+            logging.debug('Telegram Response msg {}'.format(r))
+        except Exception as e:
+            logging.error(e)
+            return {'error': 'wrongly classified waste, not able to send notification for the same'}
 
     return {'success': 'data validation successful'}
