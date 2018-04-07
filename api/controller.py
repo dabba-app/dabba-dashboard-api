@@ -84,7 +84,7 @@ def delete_bin_data(u_id):
     client = __fetch_mongo_client()
     db = client.admin
 
-    del_data = db['bin_data'].delete_one({'U_ID': u_id})
+    del_data = db['bin_data'].delete_many({'U_ID': u_id})
 
     __close_mongo_client(client=client)
 
