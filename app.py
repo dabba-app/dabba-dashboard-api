@@ -1,13 +1,12 @@
 import os
 import json
 import logging
-import threading
 from flask import (
     Flask,
     request,
     redirect,
 )
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 from api import routes
 from api import charts_dashboard
@@ -62,6 +61,7 @@ def index():
 
 
 # Serving heat map static html file
+@cross_origin()
 @app.route('/heatmap')
 def serve():
     return app.send_static_file('html/heatmap.html')
