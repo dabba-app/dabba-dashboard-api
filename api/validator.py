@@ -59,8 +59,9 @@ def validate_bin_data(data):
 
     async_msg_url = os.environ.get('TELEGRAM_URL', 'http://dabba-telegram.us-west-2.elasticbeanstalk.com') + '/sendasync/'
     user = data.get('USER_NAME', 'piyush9620')
-
+    flag = 0
     if bio > nonbio and 'TYPE' in data and data['TYPE'] == "1":
+        flag = 1
         msg = stag + " : Dear user, you have put the waste in the wrong dustbin, please put it in the biodegradable waste bin as " + stag + " is classified as biodegradable"
         data_to_send = "{\"USER\":\"" + user + "\",\"MSG\":\"" + msg + "\"}"
         try:
@@ -71,6 +72,7 @@ def validate_bin_data(data):
             return {'error': 'wrongly classified waste, not able to send notification for the same'}
 
     elif bio < nonbio and 'TYPE' in data and data['TYPE'] == "0":
+        flag = 1
         msg = stag + " : Dear user, you have put the waste in the wrong dustbin, please put it in the non-biodegradable waste bin as " + stag + " is classified as non-biodegradable"
         data_to_send = "{\"USER\":\"" + user + "\",\"MSG\":\"" + msg + "\"}"
         try:
@@ -80,7 +82,10 @@ def validate_bin_data(data):
             logging.error(e)
             return {'error': 'wrongly classified waste, not able to send notification for the same'}
 
-    return {'success': 'data validation successful'}
+    if flag == 0:
+        return {'success': 'data validation successful', 'segregation' : 'right'}
+    else:
+        return {'success': 'data validation successful', 'segregation' : 'wrong'}
 
 
 def validate_garbage_type(data):

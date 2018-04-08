@@ -63,6 +63,8 @@ def insert_bin_data(data):
     db = client.admin
 
     validation_msg = validator.validate_bin_data(data)
+    data['success'] = validation_msg['success']
+    data['segregation'] = validation_msg['segregation']
     if 'success' in validation_msg:
         logging.info('Data validation successful')
 
@@ -77,7 +79,7 @@ def insert_bin_data(data):
         return data
     else:
         logging.warning('Data validation failed', )
-        return validation_msg
+        return data
 
 
 def delete_bin_data(u_id):
